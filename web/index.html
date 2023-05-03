@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="web_embedding">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Element Embedding</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+  <section class="contents">
+    <!-- This is the JS section in the UI -->
+    <aside id="demo_controls">
+      <fieldset id="interop">
+        <legend> JS Interop</legend>
+        <!-- This is the value box-->
+        <label for="value">
+          Value 
+          <input id="value" value="" type="text" readonly />
+        </label>
+        <!-- this is the button-->
+        <input id="increment" value="Increment" type="button" />
+        
+        <!-- this is the show/hide button-->
+        <input id="btnVisible" value="Show Navigation" type="button" />
+      </fieldset>
+    </aside>
+    <aside id="nav_controls">
+      <fieldset id="interop">
+        <legend>Go to</legend>
+        <!-- This is the button -->
+        <input id="google" value="Google" type="button" />
+        <!-- This is the button -->
+        <input id="flutter" value="Flutter" type="button" />
+      </fieldset>
+    </aside>
+
+    <!-- This is the div which contains the flutter app-->
+    <article>
+      <div id="flutter_target" class="center"></div>
+    </article>
+
+  </section>
+  <!--
+This code is using JavaScript to embed Flutter, a mobile app development framework, into a web page.
+
+The code is executed when the page finishes loading. It begins by selecting an HTML element with the ID "flutter_target" and assigning it to the variable `target`. This element will serve as the container for the Flutter app.
+
+Next, the code downloads the main JavaScript file for the Flutter app, which is called "main.dart.js". This is done using the `_flutter.loader.loadEntrypoint()` function. The function takes an object with a `serviceWorker` property that specifies the version of the service worker to be used.
+
+After the main JavaScript file is loaded, the `onEntrypointLoaded` function is called. This function initializes the Flutter engine with the host element `target`. Once the engine is initialized, the `appRunner` object is created and the `runApp()` function is called to start the Flutter app.
+
+Overall, this code is using JavaScript to download and embed a Flutter app into a web page.
+  -->
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Embed flutter into divflutter_target
+      let target = document.querySelector("#flutter_target");
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: async function(engineInitializer) {
+          let appRunner = await engineInitializer.initializeEngine({
+            hostElement: target, 
+          });
+          await appRunner.runApp();
+          }, 
+        });
+        });
+      
+  </script>
+  <script src="js/js-interop.js" defer></script>
+</body>
+</html>
