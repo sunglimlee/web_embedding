@@ -5,7 +5,7 @@
    // 잘봐라.. 이함수가 초기에 실행되면 window 객체에 _stateSet 프로퍼티에 해당 함수를 연결해 놓는다. 아직 실행된게 아니다. 
    window._stateSet = function () {
       // This is done for handler callback to be updated from Flutter as well as HTML
-      window._stateSet = function() {
+      window._stateSet = function () {
          console.log('Hello from Flutter!!');
       };
       // This state of the Flutter app, see class 
@@ -13,7 +13,7 @@
 
       // Get the input box i.e 'value'
       let valueField = document.querySelector("#value");
-      let updateState = function() {
+      let updateState = function () {
          valueField.value = appState.count;
       }
       // Register a callback to update the HTML field from Flutter
@@ -48,12 +48,12 @@
       });
 
       // changes the show/hide button's text
-      let updateText = function() {
+      let updateText = function () {
          showHideButton.value = appState.showHideNav;
       }
 
       // Register a callback to update the HTML field from Flutter
-      appState.addHandler(updateText); // 이렇게 함수를 등록한다. 
+      appState.addHandler(updateText); // 이렇게 함수를 등록한다.  여기서 함수를 또 등록해주었네..
       updateText();
 
       // Show/Hide div

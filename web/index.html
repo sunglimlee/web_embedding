@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -27,7 +28,7 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>Element Embedding</title>
   <link rel="manifest" href="manifest.json">
@@ -40,6 +41,7 @@
   <script src="flutter.js" defer></script>
   <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
+
 <body>
   <section class="contents">
     <!-- This is the JS section in the UI -->
@@ -48,12 +50,12 @@
         <legend> JS Interop</legend>
         <!-- This is the value box-->
         <label for="value">
-          Value 
+          Value
           <input id="value" value="" type="text" readonly />
         </label>
         <!-- this is the button-->
         <input id="increment" value="Increment" type="button" />
-        
+
         <!-- this is the show/hide button-->
         <input id="btnVisible" value="Show Navigation" type="button" />
       </fieldset>
@@ -86,7 +88,7 @@ After the main JavaScript file is loaded, the `onEntrypointLoaded` function is c
 Overall, this code is using JavaScript to download and embed a Flutter app into a web page.
   -->
   <script>
-    window.addEventListener('load', function(ev) {
+    window.addEventListener('load', function (ev) {
       // Embed flutter into divflutter_target
       let target = document.querySelector("#flutter_target");
       // Download main.dart.js
@@ -94,16 +96,17 @@ Overall, this code is using JavaScript to download and embed a Flutter app into 
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
-        onEntrypointLoaded: async function(engineInitializer) {
+        onEntrypointLoaded: async function (engineInitializer) {
           let appRunner = await engineInitializer.initializeEngine({
-            hostElement: target, 
+            hostElement: target,
           });
           await appRunner.runApp();
-          }, 
-        });
-        });
-      
+        },
+      });
+    });
+
   </script>
   <script src="js/js-interop.js" defer></script>
 </body>
+
 </html>
