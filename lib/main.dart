@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void showHideValue(bool val) {
     setState(() {
       _isShown = val;
-      // This lizne makes sure the handler gets the event
+      // This line makes sure the handler gets the event
       _streamController.add(null);
     });
   }
