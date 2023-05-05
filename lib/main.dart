@@ -45,11 +45,14 @@ class _MyHomePageState extends State<MyHomePage> {
   String _url = 'flutter.dev';
   bool _isShown = true;
 
-  @js.JSExport() // 이렇게 개별적으로 외부 노출을 해주어야 하는가???
-  // TODOS 그럼 @js.JSExport 로 노출하지 않은 멤버는 JavaScript 의 노출된 객체로부터 호출 되지 않는걸까?
+  // @js.JSExport() // 이렇게 개별적으로 외부 노출을 해주어야 하는가???
   int get count => _counterScreenCount;
 
-  @js.JSExport() // 이렇게 외부의 함수도 연결해야하는가?
+  // DONE [BUG] 그럼 @js.JSExport 로 노출하지 않은 멤버는 JavaScript 의 노출된 객체로부터 호출 되지 않는걸까?
+  // [answer] 이거 @js.JSExport() 안넣었는데도 되는데? 전부 다 주석처리했는데 다 잘되네.. 그럼 객체가 나온게 그 안에거 사용할 수 있는거네..
+  int get count2 => _counterScreenCount;
+
+  // @js.JSExport() // 이렇게 외부의 함수도 연결해야하는가?
   // 계속 여러개의 handler 를 등록할 수 있네. 그러면 add, addError, close 가 일어날 때 마다 이 handler 가 실행되게 되는구나.
   void addHandler(void Function() handler) {
     // 외부에서 파라미터 없는 void 함수를 handler 라는 이름으로 받는다.
@@ -59,26 +62,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  @js.JSExport()
+  // @js.JSExport()
   void getValue(String payload) {
     setState(() {
       _url = payload;
       // This line makes sure the handler gets the event
-      _streamController.add(null);
+      // _streamController.add(null); // 이거 없어도 되는거 맞지? // DONE [BUG]
     });
   }
 
-  @js.JSExport()
+  // @js.JSExport()
   void showHideValue(bool val) {
     setState(() {
       _isShown = val;
       // This line makes sure the handler gets the event
-      // 이건 있을 필요가 없는것 같은데 // BUG
-      _streamController.add(null);
+       _streamController.add(null);
     });
   }
 
-  @js.JSExport()
+  // @js.JSExport()
   String get showHideNav => _isShown ? 'Hide Navigation' : 'Show Navigation';
 
 /*
@@ -150,7 +152,7 @@ The specific purpose and context of this code may vary depending on the larger c
     super.initState();
   }
 
-  @js.JSExport()
+  //@js.JSExport()
   void increment() {
     setState(() {
       _counterScreenCount++;

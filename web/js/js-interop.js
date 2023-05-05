@@ -6,7 +6,7 @@
    window._stateSet = function () {
       // This is done for handler callback to be updated from Flutter as well as HTML
       window._log_hello = function () {
-         console.log('Hello from Flutter!!'); // DONE [check] 이문장이 나오는지..
+         console.log('Hello from Flutter!!'); // DONE [CHECK] 이문장이 나오는지..
       };
       _log_hello(); // 이렇게 실행할 수 도 있구나... 
       // This state of the Flutter app, see class 
@@ -16,6 +16,7 @@
       let valueField = document.querySelector("#value");
       let updateState = function () {
          valueField.value = appState.count;
+         console.log(`appState.count 의 값은 : ${appState.count}, ${appState.count2}`);
       }
       // Register a callback to update the HTML field from Flutter
       appState.addHandler(updateState); // 이렇게 함수를 등록한다. 
@@ -44,7 +45,7 @@
       // Get the show/hide button
       let showHideButton = document.querySelector("#btnVisible");
       showHideButton.addEventListener("click", (event) => {
-         var res = _showHide(); // CHECK _ 를 이용해서 이름 변경해보자.
+         var res = _showHide(); // DONE [CHECK] _ 를 이용해서 이름 변경해보자.
          appState.showHideValue(res); // Function present inside of Flutter
       });
 
