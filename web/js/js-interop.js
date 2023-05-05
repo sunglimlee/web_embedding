@@ -5,9 +5,10 @@
    // 잘봐라.. 이함수가 초기에 실행되면 window 객체에 _stateSet 프로퍼티에 해당 함수를 연결해 놓는다. 아직 실행된게 아니다. 
    window._stateSet = function () {
       // This is done for handler callback to be updated from Flutter as well as HTML
-      window._stateSet = function () {
-         console.log('Hello from Flutter!!'); // CHECK 이문장이 나오는지..
+      window._log_hello = function () {
+         console.log('Hello from Flutter!!'); // DONE [check] 이문장이 나오는지..
       };
+      _log_hello(); // 이렇게 실행할 수 도 있구나... 
       // This state of the Flutter app, see class 
       let appState = window._appState; // 이제 자바스크립트에서 dart 에서 내보낸 javascript 객체를 사용할 수 있네.. 
 
