@@ -44,7 +44,7 @@
       // Get the show/hide button
       let showHideButton = document.querySelector("#btnVisible");
       showHideButton.addEventListener("click", (event) => {
-         var res = showHide(); // CHECK _ 를 이용해서 이름 변경해보자.
+         var res = _showHide(); // CHECK _ 를 이용해서 이름 변경해보자.
          appState.showHideValue(res); // Function present inside of Flutter
       });
 
@@ -59,7 +59,7 @@
       updateText(); // 초기값을 위해 실행
 
       // Show/Hide div
-      function showHide() {
+      function _showHide() {
          var x = document.getElementById("nav_controls");
          var shown = false;
          if (x.style.display === "none") {
