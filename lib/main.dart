@@ -1,4 +1,5 @@
 import 'dart:async';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
 import 'package:js/js.dart' as js;
 import 'package:js/js_util.dart' as js_util;
@@ -15,11 +16,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demos 18:18',
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Pagess'),
+      home: const MyHomePage(title: 'Flutter Demo Home Pages'),
     );
   }
 }
@@ -33,6 +34,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+// 이 annotation 으로 JavaScript 로 이 객체를 노출하는걸 허가하겠다. 라는 뜻.
 @js.JSExport() // We use @js.JSExport to annotate our state class
 class _MyHomePageState extends State<MyHomePage> {
   int _counterScreenCount = 0;
@@ -44,10 +46,13 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _isShown = true;
 
   @js.JSExport() // 이렇게 개별적으로 외부 노출을 해주어야 하는가???
+  // TODOS 그럼 @js.JSExport 로 노출하지 않은 멤버는 JavaScript 의 노출된 객체로부터 호출 되지 않는걸까?
   int get count => _counterScreenCount;
 
   @js.JSExport() // 이렇게 외부의 함수도 연결해야하는가?
+  // 계속 여러개의 handler 를 등록할 수 있네. 그러면 add, addError, close 가 일어날 때 마다 이 handler 가 실행되게 되는구나.
   void addHandler(void Function() handler) {
+    // 외부에서 파라미터 없는 void 함수를 handler 라는 이름으로 받는다.
     // This registers the handler we wrote in
     _streamController.stream.listen((event) {
       handler(); // javascript 사이드에서 오는 함수
@@ -58,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void getValue(String payload) {
     setState(() {
       _url = payload;
-      // This lizne makes sure the handler gets the event
+      // This line makes sure the handler gets the event
       _streamController.add(null);
     });
   }
@@ -68,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _isShown = val;
       // This line makes sure the handler gets the event
+      // 이건 있을 필요가 없는것 같은데 // BUG
       _streamController.add(null);
     });
   }
@@ -81,57 +87,63 @@ The JavaScript object that is created by js_util.createDartExport(this) can be u
   @override
   void initState() {
     /*
-    In Flutter, this code is an implementation of the initState() method of a stateful widget. Here's a breakdown of what it does:
-
-The @override annotation indicates that the initState() method is overriding a method from the superclass (in this case, StatefulWidget).
-
-Inside the initState() method, the js_util.createDartExport(this) function is called. This function creates a JavaScript object that represents the Dart object that the this keyword refers to. The js_util library is part of the dart:js package, which provides interop between Dart and JavaScript.
-
-The JavaScript object that is created by js_util.createDartExport(this) can be used to call Dart methods and access Dart properties from JavaScript.
+    In Flutter, this code is an implementation of the initState() method of a stateful widget. 
+    Here's a breakdown of what it does:
+    - The @override annotation indicates that the initState() method is overriding a method 
+    from the superclass (in this case, StatefulWidget).
+    - Inside the initState() method, the js_util.createDartExport(this) function is called. 
+    This function creates a JavaScript object that represents the Dart object that the this keyword refers to. 
+    The js_util library is part of the dart:js package, which provides interop between Dart and JavaScript.
+    - The JavaScript object that is created by js_util.createDartExport(this) can be used to call Dart methods 
+    and access Dart properties from JavaScript.
 
 Finally, the super.initState() method is called to ensure that the superclass's implementation of initState() is also executed.
 
 Overall, this code is setting up an interop between Dart and JavaScript by creating a JavaScript object that represents the Dart object that the widget state belongs to. This can be useful when you need to interact with JavaScript code or libraries from your Flutter app.
 */
     final export = js_util.createDartExport(this);
-    // These two are used inside the [js/js-interop.js]
-    /*
-    This code is using the js_util library to set a property on the global object called _appState with a value of export.
-
-Let's break it down step-by-step:
-
-js_util is a library that provides utility functions for working with JavaScript objects in the Dart programming language. It is likely being used in this code to provide some interoperability between Dart and JavaScript code.
-
-js_util.globalThis is using the globalThis keyword to reference the global object in a way that is consistent across different environments. This is similar to using window in a browser or global in Node.js, but globalThis works in any environment.
-
-The setProperty function is then called on the js_util library with three arguments:
-
-The first argument is the object on which to set the property, in this case the global object.
-
-The second argument is the name of the property to set, in this case _appState.
-
-The third argument is the value to set the property to, in this case export.
-
-Overall, this code is setting a property on the global object with the name _appState and a value of export using the js_util library. The specific purpose and context of this code may vary depending on the larger codebase it is a part of.
+    /* These two behind are used inside the [js/js-interop.js]
+    This code is using the js_util library to set a property on the global object called 
+    _appState with a value of export.
+    Let's break it down step-by-step:
+- js_util is a library that provides utility functions for working with JavaScript objects 
+in the Dart programming language. 
+It is likely being used in this code to provide some interoperability between Dart and JavaScript code.
+- js_util.globalThis is using the globalThis keyword to reference the global object in a way 
+that is consistent across different environments. This is similar to using window in a browser 
+or global in Node.js, but globalThis works in any environment.
+- The setProperty function is then called on the js_util library with three arguments:
+- The first argument is the object on which to set the property, in this case the global object.
+- The second argument is the name of the property to set, in this case _appState.
+- The third argument is the value to set the property to, in this case export.
+- Overall, this code is setting a property on the global object with the name _appState and 
+a value of export using the js_util library. 
+The specific purpose and context of this code may vary depending on the larger codebase it is a part of.
 */
+    // 잘봐라. 값이 export 이다.
     js_util.setProperty(js_util.globalThis, '_appState', export);
-    /*
-    In Flutter, `js_util.callMethod()` is used to call a JavaScript function from Dart. The first argument to `js_util.callMethod()` is the object on which the function is called, and the second argument is the name of the function. The third argument is a list of arguments to be passed to the function.
-
-In the code snippet you provided, `js_util.callMethod<void>(js_util.globalThis, '_stateSet', [])` is calling the `_stateSet` function on the global `this` object in JavaScript with an empty argument list.
-
-`js_util.globalThis` refers to the global object in JavaScript. In a web browser, the global object is usually `window`. 
-
-The `void` type argument in `js_util.callMethod<void>` is indicating that we expect the function to return nothing. 
-
-Without knowing the context of your code, it's difficult to provide more specific information about what `_stateSet` does and why it's being called in `initState()`.
+    /* In Flutter, `js_util.callMethod()` is used to call a JavaScript function from Dart. 
+    The first argument to `js_util.callMethod()` is the object on which the function is called, 
+    and the second argument is the name of the function. 
+    The third argument is a list of arguments to be passed to the function.
+    - In the code snippet you provided, `js_util.callMethod<void>(js_util.globalThis, '_stateSet', [])` 
+    is calling the `_stateSet` function on the global `this` object in JavaScript with an empty argument list.
+  - `js_util.globalThis` refers to the global object in JavaScript. In a web browser, the global object is 
+  usually `window`. 
+  - The `void` type argument in `js_util.callMethod<void>` is indicating that we expect the function 
+  to return nothing. 
+  -Without knowing the context of your code, it's difficult to provide more specific information about what `_stateSet` does and why it's being called in `initState()`.
     */
-    /*
-    In Flutter, `js_util.callMethod()` is a generic function. The type argument `<void>` in `js_util.callMethod<void>()` specifies the expected return type of the JavaScript function being called. 
-
-By default, `js_util.callMethod()` returns a dynamic type, which can be cumbersome to work with in a statically typed language like Dart. Specifying the expected return type using generics can help with type safety and make the code more readable.
-
-In this case, `js_util.callMethod<void>()` is indicating that the `_stateSet` function does not return anything (i.e., it has a return type of `void`). If the function did return a value, we would specify the return type accordingly (e.g., `js_util.callMethod<int>()` if the function returns an integer).
+    /* In Flutter, `js_util.callMethod()` is a generic function. The type argument `<void>` in 
+    `js_util.callMethod<void>()` specifies the expected return type of the JavaScript function being called. 
+    By default, `js_util.callMethod()` returns a dynamic type, which can be cumbersome to work with 
+    in a statically typed language like Dart. 
+    Specifying the expected return type using generics can help with type safety and make the code 
+    more readable.
+    In this case, `js_util.callMethod<void>()` is indicating that the `_stateSet` function 
+    does not return anything (i.e., it has a return type of `void`). 
+    If the function did return a value, we would specify the return type accordingly 
+    (e.g., `js_util.callMethod<int>()` if the function returns an integer).
     */
     js_util.callMethod<void>(
         js_util.globalThis, '_stateSet', []); // 이제 javascript 함수를 실행한다.
@@ -188,7 +200,8 @@ In this case, `js_util.callMethod<void>()` is indicating that the `_stateSet` fu
 
   @override
   void dispose() {
-    _streamController.close();
+    _streamController
+        .close(); // 반드시 close() 해주자. 중요하다. 안그러면 memory leak 이 일어난다.
     super.dispose();
   }
 }

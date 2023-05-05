@@ -6,7 +6,7 @@
    window._stateSet = function () {
       // This is done for handler callback to be updated from Flutter as well as HTML
       window._stateSet = function () {
-         console.log('Hello from Flutter!!');
+         console.log('Hello from Flutter!!'); // CHECK 이문장이 나오는지..
       };
       // This state of the Flutter app, see class 
       let appState = window._appState; // 이제 자바스크립트에서 dart 에서 내보낸 javascript 객체를 사용할 수 있네.. 
@@ -43,7 +43,7 @@
       // Get the show/hide button
       let showHideButton = document.querySelector("#btnVisible");
       showHideButton.addEventListener("click", (event) => {
-         var res = showHide();
+         var res = showHide(); // CHECK _ 를 이용해서 이름 변경해보자.
          appState.showHideValue(res); // Function present inside of Flutter
       });
 
@@ -53,8 +53,9 @@
       }
 
       // Register a callback to update the HTML field from Flutter
+      // TODOS 콜백함수를 넘겨주어서 Stream 을 사용하지 않고 콜백함수가 실행되도록 해보자..
       appState.addHandler(updateText); // 이렇게 함수를 등록한다.  여기서 함수를 또 등록해주었네..
-      updateText();
+      updateText(); // 초기값을 위해 실행
 
       // Show/Hide div
       function showHide() {
