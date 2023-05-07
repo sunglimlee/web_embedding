@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
@@ -71,7 +72,7 @@
     </aside>
 
     <!-- This is the div which contains the flutter app-->
-    <article>
+    <article id="article">
       <div id="flutter_target" class="center"></div>
     </article>
 
@@ -89,7 +90,7 @@ Overall, this code is using JavaScript to download and embed a Flutter app into 
   -->
   <script>
     window.addEventListener('load', function (ev) {
-      // Embed flutter into divflutter_target
+      // Embed flutter into div flutter_target
       let target = document.querySelector("#flutter_target");
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({

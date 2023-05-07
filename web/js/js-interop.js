@@ -73,6 +73,11 @@
          return shown;
       }
 
+      // // article 화면 키우는 부분
+      // const article = document.getElementById("article");
+      // const flutterTarget = document.getElementById("flutter_target");
+      // article.appendChild(flutterTarget);
+
    };
 }()
 );
